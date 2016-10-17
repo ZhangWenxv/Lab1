@@ -1,6 +1,6 @@
 package Lab1;
 import java.util.Scanner;
-
+//this line is added the first time.
 public class lab1 
 {
 	//ÅĞ¶Ï×Ö·û´®ÀàĞÍ
