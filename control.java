@@ -1,9 +1,8 @@
 package Lab1;
-import java.util.Scanner;
-//this line is added the first time.
-public class lab1 
-{
-	//判断字符串类型
+
+public class control {
+	
+
 	public static int judge_char(char x)
 	{
 		if(x>='0' && x<='9')
@@ -25,7 +24,6 @@ public class lab1
 		return 0;
 	}
 	
-	//判断多项式是否合法
 	public static boolean poly_true(String poly)
 	{
 		int i=0;
@@ -80,7 +78,7 @@ public class lab1
 		
 	}
 	
-	//判断字符是否存在算式中
+	
 	public static boolean char_no_exist(char x, String poly)
 	{
 		int n = poly.length();
@@ -95,7 +93,7 @@ public class lab1
 		return true;
 	}
 	
-	//判断化、简求导是否合法
+
 	public static int ins_true(String poly, String ins, int ins1_len, int ins2_len)
 	{
 		if(ins.length()<ins1_len)
@@ -130,7 +128,7 @@ public class lab1
 		}
 	}
     
-	//只对一向求导
+
 	public static String part_solv_ins1(String poly, char x)
 	{
 		int len=poly.split("\\*").length;
@@ -177,11 +175,11 @@ public class lab1
 		{
 			part_ans="0";
 		}
+//			    System.out.println(part_ans);
 		return part_ans;
 	}
 	
-	
-	//求导
+
 	public static String solv_ins1(String poly, String ins, int ins1_len)
 	{
 		int i, len;
@@ -195,7 +193,7 @@ public class lab1
 		return answ;
 	}
 	
-	//判断化简式子是否合法
+
 	public static boolean ins2_b_true(String poly, String ins2_b)
 	{
 		int len2 = ins2_b.split(" ").length;
@@ -225,7 +223,7 @@ public class lab1
 		return true;
 	}
 	
-	//字符串转数字
+
 	public static int str_int(String str)
 	{
 		int len=str.length();
@@ -237,7 +235,7 @@ public class lab1
 		return numt;
 	}
 	
-	//求一向一向的值
+
 	public static String sol_ins2_p_p(String poly_part, String ins2_bi)
 	{
 		int len=poly_part.split("\\*").length;
@@ -280,10 +278,11 @@ public class lab1
 		{
 			ans=num+"*"+answ;
 		}
+//			System.out.println(ans);
 		return ans;
 	}
 	
-	//求一向的值
+
 	public static String sol_ins2_part(String poly_part, String ins2_b)
 	{
 		int len_i=ins2_b.split(" ").length;
@@ -293,10 +292,15 @@ public class lab1
 		{
 			poly_t=sol_ins2_p_p(poly_t, ins2_b.split(" ")[i]);
 		}
+//			System.out.println(poly_t);
+		if(poly_t.charAt(0)=='0')
+		{
+			return "0";
+		}
 		return poly_t;
 	}
 	
-	//求值
+
 	public static String sol_ins2(String poly, String ins2_b)
 	{
 		int len=poly.split("\\+").length;
@@ -316,7 +320,7 @@ public class lab1
 		return ans;
 	}
 	
-	//化简_判断
+
 	public static boolean sim_true(String ans1, String ans2)
 	{
 		int len1=ans1.split("\\*").length;
@@ -361,22 +365,32 @@ public class lab1
 		return true;
 	}
 	
-	//化简_合并
+
 	public static String sim_add(String ans1, String ans2)
 	{
 		String ans="";
-		int i;
-		ans=ans+(str_int(ans1.split("\\*")[0])+str_int(ans2.split("\\*")[0]));
-		for(i=1;i<ans1.split("\\*").length;i++)
+		int i,j;
+		
+	    j=(str_int(ans1.split("\\*")[0])+str_int(ans2.split("\\*")[0]));
+	    if(j!=0)
+	    {
+		    ans=ans+j;
+			for(i=1;i<ans1.split("\\*").length;i++)
+			{
+	//			System.out.println("ans1="+ans);
+				ans=ans+"*"+ans1.split("\\*")[i];
+	//			System.out.println("ans2="+ans);
+			}
+	    }
+		else
 		{
-//			System.out.println("ans1="+ans);
-			ans=ans+ans1.split("\\*")[i];
-//			System.out.println("ans2="+ans);
+			ans="0";
 		}
+//			System.out.println(ans);
 		return ans;
 	}
 	
-	//化简结果
+
 	public static String simp(String ans)
 	{
 		String anst="";
@@ -396,7 +410,7 @@ public class lab1
 			{
 				if(sim_true(anst, ansa[j]))
 				{
-//					System.out.println("aaaaaaaaaaa");
+//						System.out.println("aaaaaaaaaaa");
 					anst=sim_add(anst, ansa[j]);
 					ansa[j]="0";
 				}
@@ -418,42 +432,44 @@ public class lab1
 		return answ;
 	}
 	
-	//主函数
-	public static void main(String []arg)
-	{  
-		
-		final int ins1_len=5, ins2_len=10;
-		Scanner in = new Scanner(System.in);
-		String poly = in.nextLine();  
-		System.out.println(poly);
-		String ans;
-		
-		if(poly_true(poly))
+	
+	public static String simp_s(String ans)
+	{
+		String answ=ans;
+//		String answ="1*x+0+0+0+0";
+		int i=0;
+		while(i<=(answ.length()-1))
 		{
-			String ins = in.nextLine();
-			int judg=ins_true(poly, ins, ins1_len, ins2_len);
-			while(judg!=0)
+			if(i==0 && answ.charAt(0)=='0' && answ.charAt(1)=='+')
 			{
-				if(judg==1)
-				{
-					ans=solv_ins1(poly, ins, ins1_len);
-					ans=simp(ans);
-					System.out.println(ans);
-				}
-				else if(judg==2)
-				{
-					String ins2_b=ins.substring(ins2_len);
-					if(ins2_b_true(poly, ins2_b))
-					{
-						ans=sol_ins2(poly, ins2_b);
-						ans=simp(ans);
-						System.out.println(ans);
-					}
-				}
-				ins = in.nextLine();
-				judg=ins_true(poly, ins, ins1_len, ins2_len);
+				answ=answ.substring(2);
 			}
-		}
-		System.out.println("end!");
-    }
+			else if(i==0 && answ.charAt(0)=='1' && answ.charAt(1)=='*')
+			{
+				answ=answ.substring(2);
+			}
+			else if(i==(answ.length()-1) && answ.charAt(i)=='0' && answ.charAt((i-1))=='+')
+			{
+				answ=answ.substring(0, (i-1));
+			}
+			else if(i==(answ.length()-1) && answ.charAt(i)=='1' && answ.charAt((i-1))=='*')
+			{
+				answ=answ.substring(0, (i-1));
+			}
+			else if(i>0 && answ.charAt(i)=='0' && answ.charAt((i-1))=='+')
+			{
+				answ=answ.substring(0, i)+answ.substring((i+2), answ.length());				
+			}
+			else if(i>0 && answ.charAt(i)=='1' && answ.charAt((i-1))=='*')
+			{
+				answ=answ.substring(0, i)+answ.substring((i+2), answ.length());				
+			}
+			else
+			{
+				i++;
+			}
+		};
+		return answ;
+	}
+
 }
